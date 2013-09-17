@@ -1,0 +1,18 @@
+[submodule "ns-3-dev-git"]
+	path = ns-3-dev-git
+	url = git@github.com:mrichart/ns-3-dev-git.git
+[submodule "ns-3-dce-git"]
+	path = ns-3-dce-git
+	url = git@github.com:mrichart/ns-3-dce-git.git
+[submodule "lua-static"]
+	path = lua-static
+	url = git@github.com:mrichart/lua-static.git
+[submodule "LuPA"]
+	path = LuPA
+	url = git@github.com:mrichart/LuPA.git
+[submodule "Rnr"]
+	path = Rnr
+	url = git@github.com:mrichart/Rnr.git
+[submodule "tau-fst"]
+	path = tau-fst
+	url = git@github.com:baliosian/tau-fst.git
