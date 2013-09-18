@@ -31,12 +31,8 @@ Steps to configure and build the project after you clone it:
   bake.py build
   
 - Build lua static:
-  cd lua-static/luasocket-2.0.2/src
-  make static
-  cd ../../lua-static/lua-5.1.5/src
-  make ns3
-  cp lua ../../../utils
-  cd ../../..
+  Follow the indications in the corresponding README
+  copy the lua executable obtained in utils
 
 Running an example:
 
