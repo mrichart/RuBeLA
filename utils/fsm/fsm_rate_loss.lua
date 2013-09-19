@@ -55,7 +55,7 @@ local initialization_subs = {
 
 -- Obtained from:          ----
 
--- out_test_pdp_aux_manual.lua  --
+-- fsm_rate_loss_manual.lua  --
 
 -------------------------------
 local functions = {}
@@ -319,23 +319,24 @@ end
 
 -------------------------------
 
-local init_state="124"
+local init_state="100"
 --shares
+local shared_0 = {}
 
 --events
 -----------------------------------------------
 --          BEGIN COMPOSITE EVENTS           --
 -----------------------------------------------
--- (hp∧ll)
+-- (¬hp∧¬ll)
 events.f6 = function(e) 
-	local left= events.event_hp(e)
-	local right= events.event_ll(e)
+	local left= events.f1(e)
+	local right= events.f0(e)
 	if left < right then return left else return right end
 end
--- (hp∧¬ll)
+-- (hp∧ll)
 events.f7 = function(e) 
 	local left= events.event_hp(e)
-	local right= events.f2(e)
+	local right= events.event_ll(e)
 	if left < right then return left else return right end
 end
 -- ¬hp
@@ -343,22 +344,22 @@ events.f1 = function(e)
 	local nonneg = events.event_hp(e)
 	return 1-nonneg
 end
--- (¬hp∧¬ll)
+-- ¬ll
 events.f0 = function(e) 
-	local left= events.f1(e)
-	local right= events.f2(e)
-	if left < right then return left else return right end
+	local nonneg = events.event_ll(e)
+	return 1-nonneg
 end
 -- (¬hp∧ll)
-events.f3 = function(e) 
+events.f2 = function(e) 
 	local left= events.f1(e)
 	local right= events.event_ll(e)
 	if left < right then return left else return right end
 end
--- ¬ll
-events.f2 = function(e) 
-	local nonneg = events.event_ll(e)
-	return 1-nonneg
+-- (hp∧¬ll)
+events.f5 = function(e) 
+	local left= events.event_hp(e)
+	local right= events.f0(e)
+	if left < right then return left else return right end
 end
 -----------------------------------------------
 --           END COMPOSITE EVENTS            --
@@ -382,22 +383,8 @@ actions.f8 = function(e)
 	end
 	return notifs.change_rate(l,e)
 end
--- f5
-actions.f5 = function(e)
-	local levels = getDomain('power')
-	local retMax = -100
-	local lp
-	for _,l in ipairs(levels) do
-		local ret = functions.fAnd(functions.action_ip(lp), functions.action_kp(lp))
-		if ret > retMax then
-			retMax = ret
-			l = lr
-		end
-	end
-	return notifs.change_power(l,e)
-end
--- f4
-actions.f4 = function(e)
+-- f3
+actions.f3 = function(e)
 	local levels = getDomain('rate')
 	local retMax = -100
 	local l
@@ -410,146 +397,129 @@ actions.f4 = function(e)
 	end
 	return notifs.change_rate(l,e)
 end
+-- f4
+actions.f4 = function(e)
+	local levels = getDomain('power')
+	local retMax = -100
+	local lp
+	for _,l in ipairs(levels) do
+		local ret = functions.fAnd(functions.action_ip(lp), functions.action_kp(lp))
+		if ret > retMax then
+			retMax = ret
+			l = lr
+		end
+	end
+	return notifs.change_power(l,e)
+end
 -----------------------------------------------
 --           END COMPOSITE ACTIONS           --
 -----------------------------------------------
 
 --transitions
 local fsm = FSM{
-  {"106", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"106", events.f2, "92", nil},
-  {"106", events.event_ll, "95", nil},
-  {"105", events.event_hp, "103", nil},
-  {"105", events.f1, "104", nil},
-  {"105", events.event_hp, "116", {actions.action_dr, actions.action_kp, }},
-  {"105", events.f1, "117", {actions.action_kr, actions.action_ip, }},
-  {"108", events.f2, "105", nil},
-  {"108", events.event_ll, "108", nil},
-  {"107", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"107", events.f2, "92", nil},
-  {"107", events.event_ll, "95", nil},
-  {"110", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"110", events.f2, "92", nil},
-  {"110", events.event_ll, "95", nil},
-  {"109", events.f0, "118", {actions.action_kr, actions.action_ip, }},
-  {"109", events.f0, "98", nil},
-  {"109", events.f7, "109", nil},
-  {"109", events.f6, "119", {actions.action_ir, actions.action_kp, }},
-  {"109", events.f3, "107", {actions.f4, actions.f5, }},
-  {"109", events.f6, "97", nil},
-  {"112", events.f2, "112", nil},
-  {"112", events.event_ll, "123", {actions.action_ir, actions.action_kp, }},
-  {"111", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"111", events.f2, "92", nil},
-  {"111", events.event_ll, "95", nil},
-  {"98", events.f2, "112", nil},
-  {"98", events.event_ll, "123", {actions.action_ir, actions.action_kp, }},
-  {"97", events.event_hp, "102", nil},
-  {"97", events.f1, "101", {actions.action_kr, actions.action_ip, }},
-  {"100", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"100", events.f2, "92", nil},
-  {"100", events.event_ll, "95", nil},
-  {"99", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"99", events.f2, "92", nil},
-  {"99", events.event_ll, "95", nil},
-  {"102", events.f1, "101", {actions.action_kr, actions.action_ip, }},
-  {"102", events.event_hp, "102", nil},
-  {"101", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"101", events.f2, "92", nil},
-  {"101", events.event_ll, "95", nil},
-  {"104", events.event_hp, "100", {actions.action_dr, actions.action_kp, }},
-  {"104", events.f1, "90", nil},
-  {"103", events.f1, "101", {actions.action_kr, actions.action_ip, }},
-  {"103", events.event_hp, "102", nil},
-  {"121", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"121", events.f2, "92", nil},
-  {"121", events.event_ll, "95", nil},
-  {"122", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"122", events.f2, "92", nil},
-  {"122", events.event_ll, "95", nil},
-  {"123", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"123", events.f2, "92", nil},
-  {"123", events.event_ll, "95", nil},
-  {"124", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"124", events.f2, "92", nil},
-  {"124", events.event_ll, "95", nil},
-  {"113", events.event_ll, "123", {actions.action_ir, actions.action_kp, }},
-  {"113", events.f2, "112", nil},
-  {"114", events.f1, "90", nil},
-  {"114", events.event_hp, "100", {actions.action_dr, actions.action_kp, }},
-  {"115", events.f0, "115", nil},
-  {"115", events.f3, "114", nil},
-  {"115", events.f3, "121", {actions.action_ir, actions.action_kp, }},
-  {"115", events.f7, "113", nil},
-  {"115", events.f7, "122", {actions.action_dr, actions.action_kp, }},
-  {"115", events.f6, "120", {actions.f8, actions.action_kp, }},
-  {"116", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"116", events.f2, "92", nil},
-  {"116", events.event_ll, "95", nil},
-  {"117", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"117", events.f2, "92", nil},
-  {"117", events.event_ll, "95", nil},
-  {"118", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"118", events.f2, "92", nil},
-  {"118", events.event_ll, "95", nil},
-  {"119", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"119", events.f2, "92", nil},
-  {"119", events.event_ll, "95", nil},
-  {"120", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"120", events.f2, "92", nil},
-  {"120", events.event_ll, "95", nil},
-  {"88", events.event_hp, "100", {actions.action_dr, actions.action_kp, }},
-  {"88", events.f1, "90", nil},
-  {"96", events.event_ll, "106", {actions.action_ir, actions.action_kp, }},
-  {"96", events.f2, "92", nil},
-  {"96", events.event_ll, "95", nil},
-  {"95", events.event_ll, "108", nil},
-  {"95", events.f2, "105", nil},
-  {"94", events.f6, "120", {actions.f8, actions.action_kp, }},
-  {"94", events.f0, "115", nil},
-  {"94", events.f3, "114", nil},
-  {"94", events.f7, "122", {actions.action_dr, actions.action_kp, }},
-  {"94", events.f7, "113", nil},
-  {"94", events.f3, "121", {actions.action_ir, actions.action_kp, }},
+  {"79", events.f0, "88", nil},
+  {"79", events.f0, "94", nil},
+  {"79", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"79", events.event_ll, "81", {actions.action_ir, actions.action_kp, }},
+  {"98", events.f0, "88", nil},
+  {"98", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"80", events.f0, "88", nil},
+  {"80", events.f1, "99", {actions.action_kr, actions.action_ip, }},
+  {"80", events.event_hp, "96", nil},
+  {"80", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"97", events.f1, "97", nil},
+  {"97", events.event_hp, "86", {actions.action_dr, actions.action_kp, }},
+  {"77", events.f6, "79", {actions.action_kr, actions.action_ip, }},
+  {"77", events.f5, "77", nil},
+  {"77", events.f7, "80", {actions.action_ir, actions.action_kp, }},
+  {"77", events.f2, "82", {actions.f3, actions.f4, }},
+  {"100", events.f0, "88", nil},
+  {"100", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"99", events.f0, "88", nil},
+  {"99", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"78", events.event_hp, "83", {actions.action_dr, actions.action_kp, }},
+  {"78", events.f1, "76", {actions.action_kr, actions.action_ip, }},
+  {"75", events.f0, "78", nil},
+  {"75", events.event_ll, "75", nil},
+  {"76", events.f0, "88", nil},
+  {"76", events.event_hp, "86", {actions.action_dr, actions.action_kp, }},
+  {"76", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"76", events.f1, "97", nil},
+  {"88", events.f6, "84", {actions.action_kr, actions.action_ip, }},
+  {"88", events.f7, "85", {actions.f8, actions.action_kp, }},
+  {"88", events.f2, "87", {actions.f3, actions.f4, }},
+  {"88", events.f5, "90", {actions.action_dr, actions.action_kp, }},
+  {"87", events.f0, "88", nil},
+  {"87", events.f1, "97", nil},
+  {"87", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"87", events.event_hp, "86", {actions.action_dr, actions.action_kp, }},
+  {"86", events.f0, "88", nil},
+  {"86", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"85", events.f0, "88", nil},
+  {"85", events.event_hp, "96", nil},
+  {"85", events.f1, "99", {actions.action_kr, actions.action_ip, }},
+  {"85", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"84", events.f2, "95", {actions.action_ir, actions.action_kp, }},
+  {"84", events.f0, "88", nil},
+  {"84", events.f7, "98", {actions.f8, actions.action_kp, }},
+  {"84", events.f6, "93", nil},
+  {"84", events.f5, "92", {actions.action_dr, actions.action_kp, }},
+  {"84", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"83", events.f0, "88", nil},
+  {"83", events.event_hp, "96", nil},
+  {"83", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"83", events.f1, "99", {actions.action_kr, actions.action_ip, }},
+  {"82", events.f0, "88", nil},
+  {"82", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"81", events.f0, "88", nil},
+  {"81", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"96", events.f1, "99", {actions.action_kr, actions.action_ip, }},
+  {"96", events.event_hp, "96", nil},
+  {"95", events.f0, "88", nil},
+  {"95", events.f1, "97", nil},
+  {"95", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"95", events.event_hp, "86", {actions.action_dr, actions.action_kp, }},
+  {"94", events.f0, "94", nil},
+  {"94", events.event_ll, "81", {actions.action_ir, actions.action_kp, }},
+  {"93", events.f6, "93", nil},
+  {"93", events.f5, "92", {actions.action_dr, actions.action_kp, }},
+  {"93", events.f2, "95", {actions.action_ir, actions.action_kp, }},
+  {"93", events.f7, "98", {actions.f8, actions.action_kp, }},
+  {"92", events.f0, "88", nil},
+  {"92", events.event_ll, "81", {actions.action_ir, actions.action_kp, }},
   {"92", events.f0, "94", nil},
-  {"92", events.f7, "91", nil},
-  {"92", events.f0, "111", {actions.action_kr, actions.action_ip, }},
-  {"92", events.f7, "110", {actions.action_dr, actions.action_kp, }},
-  {"92", events.f6, "89", nil},
-  {"92", events.f6, "96", {actions.f8, actions.action_kp, }},
-  {"92", events.f3, "99", {actions.f4, actions.f5, }},
-  {"92", events.f3, "88", nil},
-  {"91", events.f0, "118", {actions.action_kr, actions.action_ip, }},
-  {"91", events.f0, "98", nil},
-  {"91", events.f3, "107", {actions.f4, actions.f5, }},
-  {"91", events.f6, "97", nil},
-  {"91", events.f7, "109", nil},
-  {"91", events.f6, "119", {actions.action_ir, actions.action_kp, }},
-  {"90", events.f1, "90", nil},
-  {"90", events.event_hp, "100", {actions.action_dr, actions.action_kp, }},
-  {"89", events.f1, "101", {actions.action_kr, actions.action_ip, }},
-  {"89", events.event_hp, "102", nil},
+  {"92", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"91", events.f0, "88", nil},
+  {"91", events.event_ll, "75", nil},
+  {"91", events.f0, "78", nil},
+  {"91", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"90", events.f2, "82", {actions.f3, actions.f4, }},
+  {"90", events.f0, "88", nil},
+  {"90", events.f6, "79", {actions.action_kr, actions.action_ip, }},
+  {"90", events.event_ll, "91", {actions.action_ir, actions.action_kp, }},
+  {"90", events.f5, "77", nil},
+  {"90", events.f7, "80", {actions.action_ir, actions.action_kp, }},
 }
 
 --final states
 local is_accept =   {
-['106']=true,
-['107']=true,
-['110']=true,
-['111']=true,
+['79']=true,
+['98']=true,
+['80']=true,
 ['100']=true,
 ['99']=true,
-['101']=true,
-['121']=true,
-['122']=true,
-['123']=true,
-['124']=true,
-['116']=true,
-['117']=true,
-['118']=true,
-['119']=true,
-['120']=true,
-['96']=true,
+['76']=true,
+['87']=true,
+['86']=true,
+['85']=true,
+['84']=true,
+['83']=true,
+['82']=true,
+['81']=true,
+['95']=true,
+['92']=true,
+['91']=true,
+['90']=true,
 }
 
 
