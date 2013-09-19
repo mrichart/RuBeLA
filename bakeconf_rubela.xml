@@ -24,6 +24,16 @@
       <depends_on name="elf-loader" optional="True"/>
       <build type="none"/>
     </module>
+    
+  <module name="dce-meta-dev-git-with-vis">
+      <source type="mercurial">
+        <attribute name="url" value="http://code.nsnam.org/ns-3-dce"/>
+        <attribute name="module_directory" value="ns-3-dce-git"/>
+      </source>
+      <depends_on name="ns3-dev-git-with-vis" optional="False"/>
+      <depends_on name="elf-loader" optional="True"/>
+      <build type="none"/>
+    </module>
 
     <module name="dce-ns3-dev">
       <source type="mercurial">
@@ -49,6 +59,18 @@
      </build>
     </module>
     
+        <module name="dce-ns3-dev-git-with-vis">
+      <source type="mercurial">
+        <attribute name="url" value="http://code.nsnam.org/ns-3-dce"/>
+        <attribute name="module_directory" value="ns-3-dce-git"/>
+      </source>
+      <depends_on name="dce-meta-dev-git-with-vis" optional="False"/>
+      <build type="waf" objdir="build">
+        <attribute name="supported_os" value="linux;linux2"/>
+        <attribute name="configure_arguments" value="configure --with-ns3=$INSTALLDIR --with-elf-loader=$INSTALLDIR/lib --prefix=$INSTALLDIR"/>
+     </build>
+    </module>
+    
     <module name="ns3-dev-git">
       <source type="git">
         <attribute name="url" value="https://github.com/mrichart/ns-3-dev-git.git"/>
@@ -56,6 +78,17 @@
       </source>
       <build type="waf" objdir="yes">
 	      <attribute name="configure_arguments" value="configure --prefix=$INSTALLDIR --enable-tests --disable-python"/>
+      </build>
+  </module>
+  
+ <module name="ns3-dev-git-with-vis">
+      <source type="git">
+        <attribute name="url" value="https://github.com/mrichart/ns-3-dev-git.git"/>
+        <attribute name="module_directory" value="ns-3-dev-git"/>
+      </source>
+      <depends_on name="pybindgen-dev" optional="True"/>
+      <build type="waf" objdir="yes">
+	      <attribute name="configure_arguments" value="configure --prefix=$INSTALLDIR --enable-tests  --with-pybindgen=$SRCDIR/../pybindgen --visualize"/>
       </build>
   </module>
 
@@ -993,6 +1026,11 @@
   <predefined name="ns3-git">
     <enable name="ns3-dev-git"/>
     <enable name="dce-ns3-dev-git"/>
+  </predefined>
+  
+  <predefined name="ns3-git-with-vis">
+    <enable name="ns3-dev-git-with-vis"/>
+    <enable name="dce-ns3-dev-git-with-vis"/>
   </predefined>
 
 </configuration>

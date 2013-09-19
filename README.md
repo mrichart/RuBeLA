@@ -37,6 +37,13 @@ Steps to configure and build the project after you clone it:
 Running an example:
 
 - Copy some files into ns3:
+  cd utils
   sh config-dce-rate-loss.sh
+  cd ..
+
+- Run a simulation:
+  cd ns-3-dce-git
+  ./waf --run dce-lamim-1
+  
 
   
