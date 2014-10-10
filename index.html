@@ -4,9 +4,9 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -39,7 +39,9 @@
 <ul>
 <li>A mechanism for link adaptation in wireless networks based on rules using the tau-fst library (<a href="http://baliosian.github.io/tau-fst/">http://baliosian.github.io/tau-fst/</a>).</li>
 <li>The NS3 Simulator with ns-3-dce module and some modifications to simulate the adaptation mechanism (<a href="http://mrichart.github.io/ns-3-dev-git/">http://mrichart.github.io/ns-3-dev-git/</a>).</li>
-</ul><p>In detail it consist on the development and application of the tau-fst library for a network self management problem and the implementation of the solution on the NS3 Network Simulator.
+</ul>
+
+<p>In detail it consist on the development and application of the tau-fst library for a network self management problem and the implementation of the solution on the NS3 Network Simulator.
 We have ported the library to run on the NS3 so as to use it on a policy-based network management solution. 
 This work include the implementation of the policy management system which consist of a Policy Decision Point (PDP), a monitoring service, and a Policy Enforcement Point (PEP).
 The PDP’s task is to take autonomous decisions, based on the messages it receives from the monitor. 
@@ -58,24 +60,39 @@ After implementing the system, we have also define a a set of rules to find a so
     git submodule init
     git submodule update
 
-Download bake: hg clone http://code.nsnam.org/bake (you need Mercurial installed)
+Download bake: 
+    hg clone http://code.nsnam.org/bake (you need Mercurial installed)
 
-Set variable for bake: export BAKE_HOME=pwd/bake export PATH=$PATH:$BAKE_HOME export PYTHONPATH=$PYTHONPATH:$BAKE_HOME
+Set variable for bake: 
+    export BAKE_HOME=pwd/bake 
+    export PATH=$PATH:$BAKE_HOME 
+    export PYTHONPATH=$PYTHONPATH:$BAKE_HOME
 
-Configure bake: cp bakeconf_rubela.xml bake/ bake.py configure -c bakeconf_rubela.xml -p ns3-git -i ns3 --sourcedir=.
+Configure bake: 
+    cp bakeconf_rubela.xml bake/ 
+    bake.py configure -c bakeconf_rubela.xml -p ns3-git -i ns3 --sourcedir=.
 
-Download dependencies: bake.py download (If libc-debug is not found you need to install it. libc6-dbg in Ubuntu)
+Download dependencies: 
+    bake.py download (If libc-debug is not found you need to install it. libc6-dbg in Ubuntu)
 
-Build and install bake.py build
+Build and install:
+    bake.py build
 
-Build lua static: Follow the indications in the corresponding README copy the lua executable obtained in utils
+Build lua static: 
+    Follow the indications in the corresponding README
+    Copy the lua executable obtained in utils
 </code></pre>
 
 <p>Running an example:</p>
 
-<pre><code>Copy some files into ns3: cd utils sh config-dce-rate-loss.sh cd ..
+<pre><code>Copy some files into ns3: 
+    cd utils 
+    sh config-dce-rate-loss.sh 
+    cd ..
 
-Run a simulation: cd ns-3-dce-git ./waf --run dce-lamim-1
+Run a simulation: 
+    cd ns-3-dce-git 
+    ./waf --run dce-lamim-1
 </code></pre>
         </section>
 
