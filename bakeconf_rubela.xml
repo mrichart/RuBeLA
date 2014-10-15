@@ -828,7 +828,7 @@
     <module name="libc-debug">
       <source type="system_dependency">
         <!-- copy-pasted from elf-loader/extract-system-config.py -->
-        <attribute name="dependency_test" value="/usr/lib64/debug/lib64/ld-2.11.2.so.debug or /usr/lib/debug/lib64/ld-linux-x86-64.so.2.debug or /usr/lib/debug/ld-linux-x86-64.so.2 or /usr/lib/debug/lib/ld-linux.so.2.debug or /usr/lib/debug/ld-linux.so.2 or /usr/lib/debug/lib/i386-linux-gnu/ld-2.13.so or /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.13.so or /usr/lib/debug/lib/ld-2.10.1.so or /usr/lib/debug/lib/ld-2.11.1.so or /usr/lib/debug/lib/ld-2.12.1.so or /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.15.so or /usr/lib/debug/lib/i386-linux-gnu/ld-2.15.so or /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.17.so or /usr/lib/debug/lib/i386-linux-gnu/ld-2.17.so"/>
+        <attribute name="dependency_test" value="/usr/lib64/debug/lib64/ld-2.11.2.so.debug or /usr/lib/debug/lib64/ld-linux-x86-64.so.2.debug or /usr/lib/debug/ld-linux-x86-64.so.2 or /usr/lib/debug/lib/ld-linux.so.2.debug or /usr/lib/debug/ld-linux.so.2 or /usr/lib/debug/lib/i386-linux-gnu/ld-2.13.so or /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.13.so or /usr/lib/debug/lib/ld-2.10.1.so or /usr/lib/debug/lib/ld-2.11.1.so or /usr/lib/debug/lib/ld-2.12.1.so or /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.15.so or /usr/lib/debug/lib/i386-linux-gnu/ld-2.15.so or /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.17.so or /usr/lib/debug/lib/i386-linux-gnu/ld-2.17.so or /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.19.so or /usr/lib/debug/lib/i386-linux-gnu/ld-2.19.so"/>
         <attribute name="try_to_install" value="False"/> <!-- should be fixed -->
         <attribute name="name_apt-get" value="libc6-dbg"/>
         <attribute name="name_yum" value="glibc-debuginfo"/>
