@@ -15,7 +15,7 @@ Steps to configure and build the project after you clone it:
   hg clone http://code.nsnam.org/bake (you need Mercurial installed)
 
 - Set variable for bake:
-  - export BAKE_HOME=`pwd`/bake
+  - export BAKE_HOME=\`pwd\`/bake
   - export PATH=$PATH:$BAKE_HOME
   - export PYTHONPATH=$PYTHONPATH:$BAKE_HOME
 
