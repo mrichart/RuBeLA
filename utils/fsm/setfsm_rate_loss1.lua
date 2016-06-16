@@ -35,7 +35,7 @@ local action ="NOTIFICATION\n"
 .."timestamp=" ..os.time().. "\n"
 .."target_service=#NAME_PDP#\n"
 .."command=set_fsm_file\n"
-.."fsm_name=fsm/fsm_rate_loss2.lua\n"
+.."fsm_name=fsm/potenciaClients1.lua\n"
 .."END\n"
 
 local i, action_copy, proper_name

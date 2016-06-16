@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cant_ap=1
+cant_ap=2
 
 aux_ap=$(($cant_ap-1))
 
@@ -26,7 +26,6 @@ for i in `seq 0 $aux_ap`; do
 
 my_name_pdp='AP$i/lupa/pdp'
 
-my_name_pdp='AP0/lupa/pdp'
 my_name_pep='NS3-PEP'
 my_name_rmoon='NS3-RMOON'
 
