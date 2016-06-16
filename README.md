@@ -5,7 +5,13 @@ This project consist of two different things:
 - A mechanism for link adaptation in wireless networks based on rules using the tau-fst library.
 - The NS3 Simulator with ns-3-dce module and some modifications to simulate the adaptation mechanism.
 
-Steps to configure and build the project after you clone it:
+Steps to configure and build the project:
+
+- Clone the project:
+  - git clone https://github.com/mrichart/RuBeLA.git
+
+- Select your branch:
+  - If you want to use Antonio's branch do: git checkout antonio
 
 - Download all the submodules:
   - git submodule init
