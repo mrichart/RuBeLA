@@ -86,15 +86,15 @@ functions.fAnd = function(f1,f2)
 end
   
   notifs.change_power = function(l,e)
-  if l<2 then -- l estaba en 0
+  if l>=2 then -- l estaba en 0
     return {
       {target_host="127.0.0.1", target_service="NS3-PEP", notification_id=math.random(2^30), 
-      command="decrease_power"} --, level=-l, station=e.station},
+      command="decrease_power" , level=-l, station=e.station},
     } 
   else
     return {
       {target_host="127.0.0.1", target_service="NS3-PEP", notification_id=math.random(2^30), 
-      command="increase_power"} --, level=l, station=e.station},
+      command="increase_power" , level=l, station=e.station},
     }
   end
 end 
@@ -119,8 +119,8 @@ end
 
   -- Membership function for action_ip
 functions.action_ip = function(l)
-if (l>=2) then 
-  return lineal_func(0,-1,l)
+if (l<2) then 
+  return lineal_func(0,1,l)
   else
   return lineal_func(0,0,l)
   end
@@ -145,10 +145,10 @@ end
 
 -- Membership function for action_dp
 functions.action_ip = function(l)
-if (l<=2) then 
-  return lineal_func(0,0,l)
-  else
+if (l>=2) then 
   return lineal_func(0,-1,l)
+  else
+  return lineal_func(0,0,l)
   end
 end
 
@@ -158,11 +158,11 @@ events.event_NClientsConnectedLow = function(e)
 	if e.mib and e.value and string.match(e.mib, "NClientsConnected", 1) then
 	
 	
-  local NClientsConnected = tonumber(e.value)
-    if NClientsConnected<= 2 then
-      return lineal_func(0,1,NClientsConnected)
+  local NCConnectedLow = tonumber(e.value)
+    if NCConnectedLow < 2 then
+      return lineal_func(0,1,NCConnectedLow)
     else
-      return lineal_func(0,0,NClientsConnected)
+      return lineal_func(0,0,NCConnectedLow)
     end
   else
     return 0
@@ -174,11 +174,11 @@ end
 events.event_NClientsConnectedHigh = function(e) 
 	shared["incomming_event"] = e
 	if e.mib and e.value and string.match(e.mib, "NClientsConnected", 1) then
-   local NClientsConnected = tonumber(e.value)
-    if NClientsConnected> 2 then
-      return lineal_func(0,1,NClientsConnected)
+   local NCConnectedHigh = tonumber(e.value)
+    if NCConnectedHigh >= 2 then
+      return lineal_func(0,1,NCConnectedHigh)
     else
-      return lineal_func(0,0,NClientsConnected)
+      return lineal_func(0,0,NCConnectedHigh)
     end
   else
     return 0
